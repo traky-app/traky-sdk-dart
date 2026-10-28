@@ -1,0 +1,55 @@
+name: Publish to pub.dev
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    steps:
+      - name: Checkout release
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.tag_name }}
+
+      - uses: dart-lang/setup-dart@v1
+
+      - name: Install dependencies
+        run: dart pub get
+
+      - name: Check release version
+        id: published
+        run: |
+          tag="${{ github.event.release.tag_name }}"
+          release="${tag#v}"
+          version="$(awk '/^version:/ { print $2; exit }' pubspec.yaml)"
+          sdk="$(awk -F"'" '/^const sdkVersion/ { print $2; exit }' lib/src/version.dart)"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          if [ "$release" != "$version" ]; then
+            echo "El tag $tag es distinto de pubspec.yaml ($version)."
+            exit 1
+          fi
+          if [ "$sdk" != "$version" ]; then
+            echo "lib/src/version.dart ($sdk) es distinto de pubspec.yaml ($version)."
+            exit 1
+          fi
+          if curl -fsS "https://pub.dev/api/packages/traky/versions/$version" >/dev/null; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Analyze
+        if: steps.published.outputs.exists == 'false'
+        run: dart analyze
+
+      - name: Test
+        if: steps.published.outputs.exists == 'false'
+        run: dart test
+
+      - name: Publish
+        if: steps.published.outputs.exists == 'false'
+        run: dart pub publish --force

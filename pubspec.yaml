@@ -1,0 +1,23 @@
+name: traky
+description: >-
+  SDK oficial de Dart para la API de organización de Traky.
+  Autentica con una API key y llama a /org-api/v1.
+version: 1.1.4
+homepage: https://traky.app/docs
+repository: https://github.com/traky-app/traky-sdk-dart
+issue_tracker: https://github.com/traky-app/traky-sdk-dart/issues
+documentation: https://traky.app/docs
+topics:
+  - api
+  - http
+  - logistics
+
+environment:
+  sdk: ^3.4.0
+
+dependencies:
+  http: ^1.2.2
+
+dev_dependencies:
+  lints: ^5.1.1
+  test: ^1.25.8

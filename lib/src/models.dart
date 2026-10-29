@@ -277,6 +277,71 @@ final class StatusList {
   }
 }
 
+/// Cuerpo de `statuses.update`.
+///
+/// `warehouseId` o `locationId` en `null` quita ese vínculo.
+/// `category` `shipment` ya no se puede guardar.
+class StatusWrite {
+  const StatusWrite({
+    this.label,
+    this.description,
+    this.position,
+    this.category,
+    this.icon,
+    this.isActive,
+    this.isVisible,
+    this.isHiddenFromClient,
+    Object? warehouseId = absent,
+    Object? locationId = absent,
+  })  : _warehouseId = warehouseId,
+        _locationId = locationId;
+
+  final String? label;
+  final String? description;
+
+  /// Orden en el panel. De 1 a 30.
+  final int? position;
+  final StatusCategory? category;
+  final String? icon;
+  final bool? isActive;
+  final bool? isVisible;
+  final bool? isHiddenFromClient;
+  final Object? _warehouseId;
+  final Object? _locationId;
+
+  Map<String, Object?> toJson() => compact({
+        if (label != null) 'label': label,
+        if (description != null) 'description': description,
+        if (position != null) 'position': position,
+        if (category != null) 'category': category!.wire,
+        if (icon != null) 'icon': icon,
+        if (isActive != null) 'isActive': isActive,
+        if (isVisible != null) 'isVisible': isVisible,
+        if (isHiddenFromClient != null) 'isHiddenFromClient': isHiddenFromClient,
+        'warehouseId': _warehouseId,
+        'locationId': _locationId,
+      });
+}
+
+/// Cuerpo de `statuses.create`.
+///
+/// Hacen falta `label`, `description`, `category` e `icon`.
+/// `category` es `package`, `other` o `fleet`.
+final class StatusCreate extends StatusWrite {
+  const StatusCreate({
+    required super.label,
+    required super.description,
+    required super.category,
+    required super.icon,
+    super.position,
+    super.isActive,
+    super.isVisible,
+    super.isHiddenFromClient,
+    super.warehouseId,
+    super.locationId,
+  });
+}
+
 /// Office de la organización.
 ///
 /// `type` distingue la sucursal de atención de la bodega. El precio por libra

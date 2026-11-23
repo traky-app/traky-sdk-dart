@@ -344,8 +344,7 @@ final class StatusCreate extends StatusWrite {
 
 /// Office de la organización.
 ///
-/// `type` distingue la sucursal de atención de la bodega. El precio por libra
-/// solo viene cuando `type` es `warehouse`.
+/// `type` distingue la sucursal de atención de la bodega.
 final class Office {
   const Office({
     required this.id,
@@ -366,8 +365,6 @@ final class Office {
     required this.note,
     required this.createdAt,
     required this.updatedAt,
-    this.pricePerPoundClient,
-    this.pricePerPoundProvider,
   });
 
   final String id;
@@ -388,8 +385,6 @@ final class Office {
   final String note;
   final String? createdAt;
   final String? updatedAt;
-  final double? pricePerPoundClient;
-  final double? pricePerPoundProvider;
 
   factory Office.fromJson(Object? json) {
     final map = JsonMap.of(json);
@@ -412,8 +407,6 @@ final class Office {
       note: map.string('note') ?? '',
       createdAt: map.string('createdAt'),
       updatedAt: map.string('updatedAt'),
-      pricePerPoundClient: map.numberOrNull('pricePerPoundClient'),
-      pricePerPoundProvider: map.numberOrNull('pricePerPoundProvider'),
     );
   }
 }
@@ -428,7 +421,7 @@ final class OfficeList {
   }
 }
 
-/// Bodega: un office con `type: warehouse` y precio por libra.
+/// Bodega: un office con `type: warehouse`.
 final class Warehouse {
   const Warehouse({
     required this.id,
@@ -448,8 +441,6 @@ final class Warehouse {
     required this.note,
     required this.createdAt,
     required this.updatedAt,
-    required this.pricePerPoundClient,
-    required this.pricePerPoundProvider,
   });
 
   final String id;
@@ -470,8 +461,6 @@ final class Warehouse {
   final String note;
   final String? createdAt;
   final String? updatedAt;
-  final double pricePerPoundClient;
-  final double pricePerPoundProvider;
 
   factory Warehouse.fromJson(Object? json) {
     final office = Office.fromJson(json);
@@ -493,8 +482,6 @@ final class Warehouse {
       note: office.note,
       createdAt: office.createdAt,
       updatedAt: office.updatedAt,
-      pricePerPoundClient: office.pricePerPoundClient ?? 0,
-      pricePerPoundProvider: office.pricePerPoundProvider ?? 0,
     );
   }
 }

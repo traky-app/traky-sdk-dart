@@ -5,7 +5,7 @@ Future<void> main() async {
   final warehouses = await traky.warehouses.list();
   for (final warehouse in warehouses.data) {
     print(
-      '${warehouse.id} ${warehouse.name} ${warehouse.city} ${warehouse.pricePerPoundClient}',
+      '${warehouse.id} ${warehouse.name} ${warehouse.city}',
     );
   }
   traky.close();

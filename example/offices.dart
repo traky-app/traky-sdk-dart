@@ -8,6 +8,6 @@ Future<void> main() async {
   }
 
   final warehouses = await traky.offices.list(type: OfficeType.warehouse);
-  print(warehouses.data.firstOrNull?.pricePerPoundClient);
+  print(warehouses.data.firstOrNull?.city);
   traky.close();
 }

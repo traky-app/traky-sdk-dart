@@ -1625,7 +1625,9 @@ class CustomerWrite {
 
 /// Cuerpo de `customers.create`.
 ///
-/// `createContact` decide si el API también crea el contacto SHIPPER.
+/// Cédula y RUC: solo `identityNumber`. El API completa el nombre.
+/// Pasaporte: `identityNumber`, `firstName` y `lastName`.
+/// `createContact` en true, o ausente, también crea el contacto SHIPPER.
 final class CustomerCreate extends CustomerWrite {
   const CustomerCreate({
     super.accountType,

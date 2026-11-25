@@ -4,8 +4,10 @@ Future<void> main() async {
   final traky = trakyFromEnvironment();
   final customer = await traky.customers.create(
     CustomerCreate(
-      accountType: AccountType.personal,
+      identityType: 'PASSPORT',
+      identityNumber: 'A1234567',
       firstName: 'Ana',
+      lastName: 'Paz',
       email: 'ana-${DateTime.now().millisecondsSinceEpoch}@example.com',
       createContact: false,
     ),
@@ -30,7 +32,5 @@ Future<void> main() async {
     loaded.id,
     ContactWrite(types: [ContactType.shipper, ContactType.consignee]),
   );
-  await traky.contacts.delete(loaded.id);
-  await traky.customers.delete(customer.id);
   traky.close();
 }

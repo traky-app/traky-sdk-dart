@@ -2,14 +2,14 @@ import 'traky.dart';
 
 Future<void> main() async {
   final traky = trakyFromEnvironment();
+  // true o ausente: el API crea el contacto SHIPPER con el nombre verificado.
   final customer = await traky.customers.create(
     CustomerCreate(
-      accountType: AccountType.personal,
+      identityType: 'PASSPORT',
+      identityNumber: 'A1234567',
       firstName: 'Ana',
       lastName: 'Paz',
       email: 'ana@example.com',
-      // false: solo el cliente. true o ausente: también un contacto SHIPPER.
-      createContact: false,
     ),
   );
   final updated = await traky.customers.update(
@@ -21,7 +21,7 @@ Future<void> main() async {
     ContactWrite(
       accountType: AccountType.personal,
       firstName: 'Luis',
-      types: [ContactType.shipper],
+      types: [ContactType.consignee],
       clientId: updated.id,
     ),
   );
@@ -35,8 +35,5 @@ Future<void> main() async {
     types: [ContactType.shipper],
   );
   print(page.data.map((row) => row.types.map((type) => type.wire)).toList());
-
-  await traky.contacts.delete(contact.id);
-  await traky.customers.delete(updated.id);
   traky.close();
 }

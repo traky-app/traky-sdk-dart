@@ -1,4 +1,5 @@
 import '../http.dart';
+import '../identity.dart';
 import '../models.dart';
 
 /// Clientes con portal de la organización dueña de la API key.
@@ -47,11 +48,20 @@ final class CustomersResource {
   /// Crea un cliente.
   ///
   /// No envíes `types`: el API guarda `CLIENT`.
-  /// Cuenta `PERSONAL` (por defecto): `firstName`. Cuenta `BUSINESS`: `companyName`.
-  /// `createContact: true` (o ausente) crea un contacto `SHIPPER` con los mismos datos.
+  /// Cédula y RUC: solo `identityNumber`. El API verifica y completa el nombre.
+  /// Pasaporte: `identityNumber`, `firstName` y `lastName`.
+  /// `createContact: true` o ausente crea un contacto `SHIPPER` con esos datos.
   /// `createContact: false` crea solo el cliente.
   /// Scope: `customers:write` o `organization:read`.
-  Future<Customer> create(CustomerCreate body) {
+  Future<Customer> create(CustomerCreate body) async {
+    assertCustomerIdentityWrite(
+      creating: true,
+      identityType: body.identityType,
+      identityNumber: body.identityNumber,
+      firstName: body.firstName,
+      lastName: body.lastName,
+      companyName: body.companyName,
+    );
     return _http.post(
       '/org-api/v1/customers',
       body: body.toJson(),
@@ -61,22 +71,21 @@ final class CustomersResource {
 
   /// Actualiza un cliente. Solo hace falta enviar los campos que cambian.
   ///
+  /// Si cambias a cédula o RUC, envía solo el número. El API vuelve a verificar.
   /// Scope: `customers:write` o `organization:read`.
-  Future<Customer> update(String id, CustomerWrite body) {
+  Future<Customer> update(String id, CustomerWrite body) async {
+    assertCustomerIdentityWrite(
+      creating: false,
+      identityType: body.identityType,
+      identityNumber: body.identityNumber,
+      firstName: body.firstName,
+      lastName: body.lastName,
+      companyName: body.companyName,
+    );
     return _http.patch(
       resourcePath('customers', id),
       body: body.toJson(),
       decode: Customer.fromJson,
-    );
-  }
-
-  /// Elimina un cliente.
-  ///
-  /// Scope: `customers:write` o `organization:read`.
-  Future<DeletedResource> delete(String id) {
-    return _http.delete(
-      resourcePath('customers', id),
-      decode: DeletedResource.fromJson,
     );
   }
 }

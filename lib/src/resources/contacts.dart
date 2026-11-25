@@ -72,14 +72,4 @@ final class ContactsResource {
       decode: Contact.fromJson,
     );
   }
-
-  /// Elimina un contacto.
-  ///
-  /// Scope: `contacts:write` o `organization:read`.
-  Future<DeletedResource> delete(String id) {
-    return _http.delete(
-      resourcePath('contacts', id),
-      decode: DeletedResource.fromJson,
-    );
-  }
 }

@@ -2,6 +2,7 @@ library;
 
 export 'src/client.dart';
 export 'src/errors.dart';
+export 'src/identity.dart';
 export 'src/http.dart' show defaultBaseUrl;
 export 'src/models.dart';
 export 'src/resources/contacts.dart';

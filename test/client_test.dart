@@ -130,7 +130,6 @@ void main() {
       CustomerCreate(firstName: 'Ana', createContact: false),
     );
     await client.customers.update('cus_1', CustomerWrite(lastName: 'Paz'));
-    await client.customers.delete('cus_1');
     await client.contacts.list();
     await client.contacts.retrieve('con_1');
     await client.contacts.create(
@@ -140,7 +139,6 @@ void main() {
       'con_1',
       ContactWrite(types: [ContactType.consignee]),
     );
-    await client.contacts.delete('con_1');
 
     expect(calls, [
       'GET /org-api/v1/organization',
@@ -167,12 +165,10 @@ void main() {
       'GET /org-api/v1/customers/cus_1',
       'POST /org-api/v1/customers',
       'PATCH /org-api/v1/customers/cus_1',
-      'DELETE /org-api/v1/customers/cus_1',
       'GET /org-api/v1/contacts',
       'GET /org-api/v1/contacts/con_1',
       'POST /org-api/v1/contacts',
       'PATCH /org-api/v1/contacts/con_1',
-      'DELETE /org-api/v1/contacts/con_1',
     ]);
   });
 
@@ -307,29 +303,25 @@ void main() {
     await client.customers.retrieve('cus 1');
     await client.customers.create(CustomerCreate(firstName: 'Ana'));
     await client.customers.update('cus_1', CustomerWrite(lastName: 'Paz'));
-    await client.customers.delete('cus_1');
     await client.contacts.list(linked: false, clientId: 'cus_1');
     await client.contacts.create(
       ContactWrite(firstName: 'Luis', clientId: 'cus_1'),
     );
     await client.contacts.update('con_1', ContactWrite(clientId: null));
     await client.contacts.retrieve('con_1');
-    await client.contacts.delete('con_1');
 
     expect(calls.map((call) => '${call.method} ${call.url}').toList(), [
       'GET /org-api/v1/customers?isActive=true&types=CLIENT%2CSHIPPER&page=2',
       'GET /org-api/v1/customers/cus%201',
       'POST /org-api/v1/customers',
       'PATCH /org-api/v1/customers/cus_1',
-      'DELETE /org-api/v1/customers/cus_1',
       'GET /org-api/v1/contacts?clientId=cus_1&linked=false',
       'POST /org-api/v1/contacts',
       'PATCH /org-api/v1/contacts/con_1',
       'GET /org-api/v1/contacts/con_1',
-      'DELETE /org-api/v1/contacts/con_1',
     ]);
     expect(jsonDecode(calls[2].body!), {'firstName': 'Ana'});
-    expect(jsonDecode(calls[7].body!), {'clientId': null});
+    expect(jsonDecode(calls[6].body!), {'clientId': null});
   });
 
   test('traduce el error de Nest', () async {

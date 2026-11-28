@@ -2,7 +2,7 @@ import 'traky.dart';
 
 Future<void> main() async {
   final traky = trakyFromEnvironment();
-  // true o ausente: el API crea el contacto SHIPPER con el nombre verificado.
+  // true o ausente: el API crea el contacto CONSIGNEE (consignatario) con el nombre verificado.
   final customer = await traky.customers.create(
     CustomerCreate(
       identityType: 'PASSPORT',

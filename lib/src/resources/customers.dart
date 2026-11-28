@@ -50,7 +50,7 @@ final class CustomersResource {
   /// No envíes `types`: el API guarda `CLIENT`.
   /// Cédula y RUC: solo `identityNumber`. El API verifica y completa el nombre.
   /// Pasaporte: `identityNumber`, `firstName` y `lastName`.
-  /// `createContact: true` o ausente crea un contacto `SHIPPER` con esos datos.
+  /// `createContact: true` o ausente crea un contacto `CONSIGNEE` (consignatario) con esos datos.
   /// `createContact: false` crea solo el cliente.
   /// Scope: `customers:write` o `organization:read`.
   Future<Customer> create(CustomerCreate body) async {

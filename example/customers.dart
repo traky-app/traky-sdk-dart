@@ -9,7 +9,7 @@ Future<void> main() async {
   print('${page.pagination.limit} por página');
 
   // Cédula y RUC: solo el número. El API completa el nombre y, si no
-  // pasas createContact: false, también el contacto SHIPPER.
+  // pasas createContact: false, también el contacto CONSIGNEE (consignatario).
   // Pasaporte: el nombre y el apellido sí se envían.
   final created = await traky.customers.create(
     CustomerCreate(

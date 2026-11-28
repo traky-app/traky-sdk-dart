@@ -1627,7 +1627,7 @@ class CustomerWrite {
 ///
 /// Cédula y RUC: solo `identityNumber`. El API completa el nombre.
 /// Pasaporte: `identityNumber`, `firstName` y `lastName`.
-/// `createContact` en true, o ausente, también crea el contacto SHIPPER.
+/// `createContact` en true, o ausente, también crea el contacto CONSIGNEE (consignatario).
 final class CustomerCreate extends CustomerWrite {
   const CustomerCreate({
     super.accountType,
@@ -1653,7 +1653,7 @@ final class CustomerCreate extends CustomerWrite {
     this.createContact,
   });
 
-  /// `true` o ausente: crea un contacto `SHIPPER` con los mismos datos del cliente.
+  /// `true` o ausente: crea un contacto `CONSIGNEE` (consignatario) con los mismos datos del cliente.
   /// `false`: crea solo el cliente.
   final bool? createContact;
 
